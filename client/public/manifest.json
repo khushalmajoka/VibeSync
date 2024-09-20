@@ -1,0 +1,12 @@
+{
+  "short_name": "VibeSync",
+  "name": "VibeSync",
+  "icons": [
+    {
+      "src": "favicon.webp",
+      "sizes": "555x555"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone"
+}
