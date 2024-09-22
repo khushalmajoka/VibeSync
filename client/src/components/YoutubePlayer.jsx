@@ -6,7 +6,6 @@ import { emitVideoId } from "../services/socketService";
 
 const YoutubePlayer = () => {
   const [videoUrl, setVideoUrl] = useState("");
-  // const [player, setPlayer] = useState(null);
   const videoId = useSelector((state) => state.room.videoId);
   const roomId = useSelector((state) => state.room.roomId);
   const dispatch = useDispatch();
@@ -27,17 +26,15 @@ const YoutubePlayer = () => {
   };
 
   const onReady = (event) => {
-    // setPlayer(event.target);
+
   };
 
   const onPause = () => {
-    // const currentTime = player.getCurrentTime();
-    // syncVideo('pause', currentTime, roomId);
+    
   };
 
   const onPlay = () => {
-    // const currentTime = player.getCurrentTime();
-    // syncVideo('play', currentTime, roomId);
+    
   };
 
   const opts = {
