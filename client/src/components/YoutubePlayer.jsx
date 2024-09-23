@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import YouTube from "react-youtube";
 import { setVideoId } from "../store/roomSlice";
 import { emitVideoId } from "../services/socketService";
+import { MdOutlineContentCopy } from "react-icons/md";
 
 const YoutubePlayer = () => {
   const [videoUrl, setVideoUrl] = useState("");
@@ -25,44 +26,62 @@ const YoutubePlayer = () => {
     emitVideoId(id, roomId);
   };
 
-  const onReady = (event) => {
-
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(roomId).then(
+      () => {
+        alert("Room link copied to clipboard!");
+      },
+      (err) => {
+        console.error("Failed to copy the link: ", err);
+      }
+    );
   };
 
-  const onPause = () => {
-    
-  };
+  const onReady = (event) => {};
 
-  const onPlay = () => {
-    
-  };
+  const onPause = () => {};
+
+  const onPlay = () => {};
 
   const opts = {
-    height: "390",
-    width: "650",
+    width:
+      window.innerWidth >= 768 ? "800" : (window.innerWidth * 0.9).toString(),
+    height:
+      (window.innerWidth >= 768 ? "750" : window.innerWidth * 0.9) * (9 / 16),
     playerVars: {
-      autoplay: 1,
+      autoplay: 0,
     },
   };
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="mb-6">
+      <div className="mb-6 w-full flex justify-center md:flex-none md:justify-center">
         <input
           type="text"
           value={videoUrl}
           onChange={handleVideoChange}
           placeholder="Enter YouTube video link"
-          className="mb-4 w-96 p-2 border bg-gray-100 border-gray-300 rounded"
+          className="mb-4 w-3/4 md:w-2/3 p-2 border bg-gray-100 border-gray-300 rounded"
         />
       </div>
-      <YouTube
-        videoId={videoId}
-        opts={opts}
-        onReady={onReady}
-        onPlay={onPlay}
-        onPause={onPause}
-      />
+      <div class="">
+        <YouTube
+          videoId={videoId}
+          opts={opts}
+          onReady={onReady}
+          onPlay={onPlay}
+          onPause={onPause}
+        />
+      </div>
+      <div className="flex justify-center">
+        <button
+          className="mt-8 px-4 py-2 w-auto text-sm sm:text-base bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none flex"
+          onClick={copyToClipboard}
+        >
+          {roomId}
+          <MdOutlineContentCopy className="ml-3 self-center" />
+        </button>
+      </div>
     </div>
   );
 };
