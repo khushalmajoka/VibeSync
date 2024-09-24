@@ -2,18 +2,22 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setRoomId } from "../store/roomSlice";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [joinRoomId, setJoinRoomId] = useState("");
+  const [isCreatingRoom, setIsCreatingRoom] = useState(false);
 
   const createRoom = async () => {
+    setIsCreatingRoom(true);
     const response = await fetch(
       `${process.env.REACT_APP_SERVER_URL}/api/create-room`
     );
     const data = await response.json();
     dispatch(setRoomId(data.roomId));
+    setIsCreatingRoom(false);
     navigate(`/room/${data.roomId}`);
   };
 
@@ -28,6 +32,9 @@ const Home = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
+      <div className="w-full absolute top-0">
+        {isCreatingRoom ? <LinearProgress /> : null}
+      </div>
       <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-blue-600 m-5 cursor-pointer">
         VibeSync
       </h1>
