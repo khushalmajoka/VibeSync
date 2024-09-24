@@ -15,10 +15,12 @@ const Home = () => {
     const response = await fetch(
       `${process.env.REACT_APP_SERVER_URL}/api/create-room`
     );
-    const data = await response.json();
-    dispatch(setRoomId(data.roomId));
-    setIsCreatingRoom(false);
-    navigate(`/room/${data.roomId}`);
+    setTimeout(async () => {
+      const data = await response.json();
+      dispatch(setRoomId(data.roomId));
+      setIsCreatingRoom(false);
+      navigate(`/room/${data.roomId}`);
+    }, 10000);
   };
 
   const joinRoom = () => {
@@ -49,8 +51,11 @@ const Home = () => {
         />
         <div className="m-4 sm:m-5 flex w-[90%] max-w-xs justify-evenly">
           <button
-            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none"
+            className={`${
+              isCreatingRoom ? "cursor-wait opacity-50 hover:bg-blue-500" : ""
+            } px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none`}
             onClick={createRoom}
+            disabled={isCreatingRoom ? "disabled" : ""}
           >
             Create Room
           </button>
