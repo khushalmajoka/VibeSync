@@ -93,6 +93,11 @@ const Home = () => {
           placeholder="Enter Room ID or Room Link"
           value={joinRoomIdOrRoomLink}
           onChange={(e) => setJoinRoomIdOrRoomLink(e.target.value)}
+          onKeyDown={async (e) => {
+            if (e.key === "Enter") {
+              await joinRoom();
+            }
+          }}
           className="w-full max-w-md px-4 py-2 m-2 bg-white border border-slate-300 rounded-md text-base shadow-sm placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
         />
         <div className="m-4 sm:m-5 flex w-[90%] max-w-xs justify-evenly">
