@@ -4,12 +4,14 @@ const roomRoutes = require("./routes/roomRoutes");
 const roomSocket = require("./sockets/roomSocket");
 const socketio = require("socket.io");
 const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
 
 const PORT = process.env.PORT || 5000;
 dotenv.config();
 
 const app = express();
 app.use(cors());
+app.use(bodyParser.json());
 
 app.use("/api", roomRoutes);
 

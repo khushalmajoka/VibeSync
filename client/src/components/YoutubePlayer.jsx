@@ -9,6 +9,7 @@ const YoutubePlayer = () => {
   const [videoUrl, setVideoUrl] = useState("");
   const videoId = useSelector((state) => state.room.videoId);
   const roomId = useSelector((state) => state.room.roomId);
+  const roomLink = window.location.href;
   const dispatch = useDispatch();
 
   const extractVideoId = (url) => {
@@ -27,7 +28,7 @@ const YoutubePlayer = () => {
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(roomId).then(
+    navigator.clipboard.writeText(roomLink).then(
       () => {
         alert("Room link copied to clipboard!");
       },
@@ -78,7 +79,7 @@ const YoutubePlayer = () => {
           className="mt-8 px-4 py-2 w-auto text-sm sm:text-base bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none flex"
           onClick={copyToClipboard}
         >
-          {roomId}
+          {roomLink.slice(0, 35) + '...'}
           <MdOutlineContentCopy className="ml-3 self-center" />
         </button>
       </div>
