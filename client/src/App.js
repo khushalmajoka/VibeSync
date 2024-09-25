@@ -17,7 +17,7 @@ function App() {
   });
 
   return (
-    <div className="min-h-screen bg-abstract-white-and-gray-overlap-circles">
+    <div className="h-screen bg-abstract-white-and-gray-overlap-circles">
       <Router>
         <Routes>
           <Route path="/" exact element={<Home />} />

@@ -16,7 +16,7 @@ const ChatBox = () => {
   };
 
   return (
-    <div className="w-2/3 md:w-1/4 md:max-w-96 min-h-96 h-full flex flex-col m-10 md:m-0 bg-gray-100 rounded-lg shadow-lg">
+    <div className="flex flex-col min-w-80 md:min-w-96 m-10 md:m-0 h-full md:h-4/5">
       <div className="bg-blue-500 text-white text-center font-bold py-2 rounded-t-lg">
         Room Chat
       </div>

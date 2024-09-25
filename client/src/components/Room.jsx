@@ -33,16 +33,16 @@ const Room = () => {
   };
 
   return (
-    <div className="h-full flex flex-col items-center justify-center">
+    <div className="h-full flex flex-col items-center">
       <div className="w-full flex md:flex-none md:justify-start justify-center">
         <h1
-          className="text-4xl font-bold text-blue-600 m-8 md:mt-7 md:ml-8 md:mb-7 cursor-pointer"
+          className="text-4xl font-bold text-blue-600 m-8 md:mt-7 md:ml-8 md:mb-0 cursor-pointer"
           onClick={handleTitleClick}
         >
           VibeSync
         </h1>
       </div>
-      <div className="flex flex-col md:flex-row w-screen h-full justify-evenly items-center">
+      <div className="h-full flex flex-col md:flex-row w-screen md:justify-evenly items-center">
         <YoutubePlayer />
         <ChatBox />
       </div>
