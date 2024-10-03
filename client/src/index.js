@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import { ModalProvider } from "./components/ui/animated-modal";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <ModalProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ModalProvider>
   </React.StrictMode>
 );

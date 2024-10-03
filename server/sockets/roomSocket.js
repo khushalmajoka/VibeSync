@@ -1,3 +1,5 @@
+const { setVideoIdInRedisRoom } = require("../redis/index");
+
 const videoSocket = (io) => {
 
     io.on("connection", (socket) => {
@@ -10,7 +12,7 @@ const videoSocket = (io) => {
   
       socket.on("sync-video", (data) => {
         const { action, currentTime, roomId } = data;
-        socket.broadcast.to(roomId).emit("sync-video", { action, currentTime });
+        socket.to(roomId).emit("sync-video", { action, currentTime });
       });
   
       socket.on("send-message", (data) => {
@@ -18,6 +20,7 @@ const videoSocket = (io) => {
       });
 
       socket.on("video-id", (data) => {
+        setVideoIdInRedisRoom(data.videoId, data.roomId);
         socket.to(data.roomId).emit("receive-video-id", {videoId: data.videoId});
       });
   

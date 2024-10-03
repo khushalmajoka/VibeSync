@@ -1,9 +1,10 @@
 const express = require("express");
-const { createRoom, joinRoom } = require("../controllers/roomController");
+const { createRoom, joinRoom, checkRoom } = require("../controllers/roomController");
 
 const router = express.Router();
 
-router.get("/create-room", createRoom);
+router.post("/create-room", createRoom);
 router.post("/join-room", joinRoom);
+router.post("/check-room", checkRoom);
 
 module.exports = router;

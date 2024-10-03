@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { checkForSocketId, sendMessage } from "../services/socketService";
 import { useDispatch, useSelector } from "react-redux";
+import { Input } from "./ui/input";
 
-const ChatBox = () => {
+export default function ChatBox() {
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.room.messages);
@@ -16,19 +17,21 @@ const ChatBox = () => {
   };
 
   return (
-    <div className="flex flex-col min-w-80 md:min-w-96 m-10 md:m-0 h-full md:h-4/5">
-      <div className="bg-blue-500 text-white text-center font-bold py-2 rounded-t-lg">
+    <div className="flex flex-col min-w-80 md:min-w-96 m-10 md:m-0 h-full max-h-[22rem] md:h-4/5 md:max-h-[32rem] md:rounded-2xl p-4 md:p-8 shadow-input bg-black">
+      <h2 className="font-bold text-base md:text-xl text-neutral-200 text-center">
         Room Chat
-      </div>
+      </h2>
 
-      <div className="grow overflow-y-auto p-4 flex flex-col space-y-2 bg-gray-100">
+      <div className="bg-gradient-to-r from-transparent via-neutral-700 to-transparent my-5 md:my-5 h-[1px] w-full" />
+
+      <div className="grow overflow-y-auto p-4 flex flex-col space-y-2">
         {messages.map((msg, index) => (
           <div
             key={index}
             className={`p-2 rounded-lg max-w-xs ${
               checkForSocketId(msg.sender)
-                ? "bg-blue-500 text-white self-end"
-                : "bg-gray-200 self-start"
+                ? "bg-neutral-500 text-white self-end"
+                : "bg-neutral-200 self-start"
             }`}
           >
             {msg.text}
@@ -36,24 +39,35 @@ const ChatBox = () => {
         ))}
       </div>
 
-      <div className="flex items-center p-3 bg-gray-200 rounded-b-lg">
-        <input
+      <div className="bg-gradient-to-r from-transparent via-neutral-700 to-transparent my-5 md:my-5 h-[1px] w-full" />
+
+      <div className="flex items-center p-3 rounded-b-lg">
+        <Input
           type="text"
-          className="w-full p-2 border border-gray-300 bg-gray-100 rounded-lg focus:outline-none"
+          className="w-full"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessageHandler()}
           placeholder="Type a message..."
         />
         <button
-          className="ml-3 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+          className="px-4 ml-3 h-10 bg-gradient-to-br text-white rounded-md font-medium from-zinc-900 to-zinc-900 shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset]"
+          type="submit"
           onClick={sendMessageHandler}
         >
           Send
+          <BottomGradient />
         </button>
       </div>
     </div>
   );
-};
+}
 
-export default ChatBox;
+const BottomGradient = () => {
+  return (
+    <>
+      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+    </>
+  );
+};

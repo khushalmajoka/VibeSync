@@ -10,8 +10,21 @@ export const initiateSocketConnection = (roomId, dispatch, player) => {
     dispatch(setMessages(data));
   });
   socket.on("receive-video-id", (data) => {
+    console.log(data);
     dispatch(setVideoId(data.videoId));
   });
+  socket.on("sync-video", (data) => {
+    const { action, currentTime } = data;
+  
+    if (action === "pause") {
+      player.pauseVideo();
+      player.seekTo(currentTime);
+    } else if (action === "play") {
+      player.playVideo();
+      // player.seekTo(currentTime);
+    }
+  });
+  
 };
 
 export const disconnectSocket = () => {
@@ -30,4 +43,8 @@ export const checkForSocketId = (socketId) => {
 
 export const emitVideoId = (videoId, roomId) => {
   socket.emit("video-id", { videoId, roomId });
+};
+
+export const syncVideo = (action, currentTime, roomId) => {
+  socket.emit("sync-video", { action, currentTime, roomId });
 };

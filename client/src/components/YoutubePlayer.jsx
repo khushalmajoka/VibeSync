@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import YouTube from "react-youtube";
 import { setVideoId } from "../store/roomSlice";
-import { emitVideoId } from "../services/socketService";
-import { MdOutlineContentCopy } from "react-icons/md";
+import { emitVideoId, syncVideo } from "../services/socketService";
+import { MdOutlineContentCopy, MdOutlineCheck } from "react-icons/md";
+import { Input } from "./ui/input";
+import { HoverBorderGradient } from "./ui/hover-border-gradient";
 
-const YoutubePlayer = () => {
+const YoutubePlayer = ({ player, setPlayer }) => {
   const [videoUrl, setVideoUrl] = useState("");
+  const [copyPopup, setCopyPopup] = useState(false);
   const videoId = useSelector((state) => state.room.videoId);
   const roomId = useSelector((state) => state.room.roomId);
   const roomLink = window.location.href;
@@ -30,7 +33,10 @@ const YoutubePlayer = () => {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(roomLink).then(
       () => {
-        alert("Room link copied to clipboard!");
+        setCopyPopup(true);
+        setTimeout(() => {
+          setCopyPopup(false);
+        }, 3000);
       },
       (err) => {
         console.error("Failed to copy the link: ", err);
@@ -38,11 +44,19 @@ const YoutubePlayer = () => {
     );
   };
 
-  const onReady = (event) => {};
+  const onReady = (event) => {
+    setPlayer(event.target);
+  };
 
-  const onPause = () => {};
+  const onPause = () => {
+    const currentTime = player.getCurrentTime();
+    syncVideo("pause", currentTime, roomId);
+  };
 
-  const onPlay = () => {};
+  const onPlay = () => {
+    const currentTime = player.getCurrentTime();
+    syncVideo("play", currentTime, roomId);
+  };
 
   const opts = {
     width:
@@ -50,22 +64,22 @@ const YoutubePlayer = () => {
     height:
       (window.innerWidth >= 768 ? "750" : window.innerWidth * 0.9) * (9 / 16),
     playerVars: {
-      autoplay: 0,
+      autoplay: 1,
     },
   };
 
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="mb-6 w-full flex justify-center md:flex-none md:justify-center">
-        <input
+        <Input
           type="text"
           value={videoUrl}
           onChange={handleVideoChange}
           placeholder="Enter YouTube video link"
-          className="mb-4 w-3/4 md:w-2/3 p-2 border bg-gray-100 border-gray-300 rounded"
+          closeIcon={true}
         />
       </div>
-      <div class="">
+      <div className="">
         <YouTube
           videoId={videoId}
           opts={opts}
@@ -75,13 +89,21 @@ const YoutubePlayer = () => {
         />
       </div>
       <div className="flex justify-center">
-        <button
-          className="mt-8 px-4 py-2 w-auto text-sm sm:text-base bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none flex"
+        <HoverBorderGradient
+          containerClassName="mt-8"
+          as="button"
           onClick={copyToClipboard}
+          className="text-sm sm:text-base font-semibold flex"
         >
-          {roomLink.slice(0, 35) + '...'}
-          <MdOutlineContentCopy className="ml-3 self-center" />
-        </button>
+          <span>{roomLink.slice(0, 35) + "..."}</span>
+          <span className="ml-3 self-center">
+            {copyPopup ? (
+              <MdOutlineCheck/>
+            ) : (
+              <MdOutlineContentCopy/>
+            )}
+          </span>
+        </HoverBorderGradient>
       </div>
     </div>
   );
