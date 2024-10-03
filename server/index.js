@@ -5,18 +5,7 @@ const roomSocket = require("./sockets/roomSocket");
 const socketio = require("socket.io");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
-
-// const redis = require('redis');
-
-// const client = redis.createClient({
-//   password: process.env.REDIS_PASSWORD,
-//   socket: {
-//       host: process.env.REDIS_HOST,
-//       port: process.env.REDIS_PORT
-//   }
-// });
-
-// client.connect();
+const { client } = require("./redis");
 
 const PORT = process.env.PORT || 5000;
 dotenv.config();
@@ -27,7 +16,7 @@ app.use(bodyParser.json());
 
 app.use("/api", roomRoutes);
 
-const server = app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, () => {
   console.log("Server running on port: " + PORT);
 });
 
@@ -37,5 +26,16 @@ const io = socketio(server, {
     methods: ["GET", "POST"],
   },
 });
+
+
+
+client
+  .connect()
+  .then(() => {
+    console.log("Connected to Redis Cloud");
+  })
+  .catch((err) => {
+    console.error("Redis connection error:", err);
+  });
 
 roomSocket(io);
