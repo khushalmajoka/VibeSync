@@ -26,8 +26,8 @@ const Room = () => {
   const [player, setPlayer] = useState(null);
   const [nickname, setNickname] = useState("");
   const dispatch = useDispatch();
-  const { checkRoomExists, checkingRoomExists } = useCheckRoomExists();
-  const { joinRoom, isJoiningRoom } = useJoinRoom();
+  const { checkRoomExists } = useCheckRoomExists();
+  const { joinRoom } = useJoinRoom();
   const { setOpen } = useModal();
 
   const handleSubmit = () => {

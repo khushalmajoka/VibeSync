@@ -43,6 +43,7 @@ export function HoverBorderGradient({
       }, duration * 1000);
       return () => clearInterval(interval);
     }
+    // eslint-disable-next-line
   }, [hovered]);
   return (
     <Tag
