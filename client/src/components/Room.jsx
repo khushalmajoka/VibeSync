@@ -38,7 +38,7 @@ const Room = () => {
 
     joinRoom(roomId, nickname).then(() => {
       setOpen(false);
-    })
+    });
   };
 
   useEffect(() => {
@@ -78,7 +78,7 @@ const Room = () => {
 
   return (
     <div className="h-full bg-neutral-950 flex flex-col items-center antialiased">
-      {/* <ModalBody>
+      <ModalBody>
         <ModalContent>
           <h4 className="text-lg md:text-2xl text-neutral-100 font-bold text-center mb-8">
             Welcome to VibeSync!
@@ -107,7 +107,7 @@ const Room = () => {
             Join Room
           </button>
         </ModalFooter>
-      </ModalBody> */}
+      </ModalBody>
 
       <div className="w-full flex md:flex-none md:justify-start justify-center z-10">
         <h1
