@@ -88,31 +88,31 @@ const Home = () => {
               }}
             />
             <div className="m-4 sm:m-5 flex w-[90%] max-w-xs justify-evenly">
-              <ModalTrigger>
-                <button
-                  className={`bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 block text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset, px-4 0px_-1px_0px_0px_#ffffff40_inset] mr-5`}
-                  onClick={() => setCurrentAction("create")}
-                  disabled={isCreatingRoom ? "disabled" : ""}
-                >
-                  Create Room
-                  <BottomGradient />
-                </button>
+              <ModalTrigger
+                className={`${
+                  isCreatingRoom
+                    ? "cursor-wait opacity-50 hover:bg-blue-500"
+                    : ""
+                } mr-5`}
+                setCurrentAction={() => setCurrentAction("create")}
+                disabled={isCreatingRoom ? "disabled" : ""}
+              >
+                <span>Create Room</span>
+                <BottomGradient />
               </ModalTrigger>
 
-              <ModalTrigger>
-                <button
-                  ref={joinButtonRef}
-                  className={`${
-                    isJoiningRoom
-                      ? "cursor-wait opacity-50 hover:bg-blue-500"
-                      : ""
-                  } bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 block px-4 text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] ml-5`}
-                  onClick={() => setCurrentAction("join")}
-                  disabled={isJoiningRoom ? "disabled" : ""}
-                >
-                  Join Room
-                  <BottomGradient />
-                </button>
+              <ModalTrigger
+                joinButtonRef={joinButtonRef}
+                className={`${
+                  isJoiningRoom
+                    ? "cursor-wait opacity-50 hover:bg-blue-500"
+                    : ""
+                } ml-5`}
+                setCurrentAction={() => setCurrentAction("join")}
+                disabled={isJoiningRoom ? "disabled" : ""}
+              >
+                <span>Join Room</span>
+                <BottomGradient />
               </ModalTrigger>
             </div>
           </div>

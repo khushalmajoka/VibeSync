@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import YouTube from "react-youtube";
 import { setVideoId } from "../store/roomSlice";
@@ -13,6 +13,7 @@ const YoutubePlayer = ({ player, setPlayer }) => {
   const videoId = useSelector((state) => state.room.videoId);
   const roomId = useSelector((state) => state.room.roomId);
   const roomLink = window.location.href;
+  const inputRef = useRef(null);
   const dispatch = useDispatch();
 
   const extractVideoId = (url) => {
@@ -68,6 +69,12 @@ const YoutubePlayer = ({ player, setPlayer }) => {
     },
   };
 
+  const handleClick = () => {
+    if (inputRef.current) {
+      inputRef.current.select();
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="mb-6 w-full flex justify-center md:flex-none md:justify-center">
@@ -76,6 +83,8 @@ const YoutubePlayer = ({ player, setPlayer }) => {
           value={videoUrl}
           onChange={handleVideoChange}
           placeholder="Enter YouTube video link"
+          ref={inputRef}
+          onClick={handleClick}
           closeIcon={true}
         />
       </div>
@@ -97,11 +106,7 @@ const YoutubePlayer = ({ player, setPlayer }) => {
         >
           <span>{roomLink.slice(0, 35) + "..."}</span>
           <span className="ml-3 self-center">
-            {copyPopup ? (
-              <MdOutlineCheck/>
-            ) : (
-              <MdOutlineContentCopy/>
-            )}
+            {copyPopup ? <MdOutlineCheck /> : <MdOutlineContentCopy />}
           </span>
         </HoverBorderGradient>
       </div>

@@ -4,6 +4,7 @@ const initialState = {
   roomId: null,
   videoId: null,
   messages: [],
+  nickname: null,
 };
 
 const roomSlice = createSlice({
@@ -22,9 +23,12 @@ const roomSlice = createSlice({
     clearMessages: (state) => {
       state.messages.length = 0;
     },
+    setNickname: (state, action) => {
+      state.nickname = action.payload;
+    },
   },
 });
 
-export const { setRoomId, setVideoId, setMessages, clearMessages } =
+export const { setRoomId, setVideoId, setMessages, clearMessages, setNickname } =
   roomSlice.actions;
 export default roomSlice.reducer;

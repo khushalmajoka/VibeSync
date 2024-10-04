@@ -16,10 +16,10 @@ export const initiateSocketConnection = (roomId, dispatch, player) => {
   socket.on("sync-video", (data) => {
     const { action, currentTime } = data;
   
-    if (action === "pause") {
+    if (player && action === "pause") {
       player.pauseVideo();
       player.seekTo(currentTime);
-    } else if (action === "play") {
+    } else if (player && action === "play") {
       player.playVideo();
       // player.seekTo(currentTime);
     }

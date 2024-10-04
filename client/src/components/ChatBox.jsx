@@ -66,8 +66,10 @@ export default function ChatBox() {
 const BottomGradient = () => {
   return (
     <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+      <span className="group-hover/btn:opacity-100 -bottom-px block transition duration-500 opacity-0 absolute h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+      {/* w-full inset-x-0 */}
+      <span className="group-hover/btn:opacity-100 -bottom-px blur-sm block transition duration-500 opacity-0 absolute h-px mx-auto bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+      {/* w-1/2 inset-x-10 */}
     </>
   );
 };

@@ -36,6 +36,7 @@ const Room = () => {
       return;
     }
 
+    dispatch(setNickname(nickname));
     joinRoom(roomId, nickname).then(() => {
       setOpen(false);
     });
@@ -50,14 +51,14 @@ const Room = () => {
 
         if (exists) {
           dispatch(setRoomId(currentRoomId));
-          setOpen(true);
+          if(!nickname) setOpen(true);
         } else {
           navigate("/pagenotfound");
           return;
         }
       }
 
-      initiateSocketConnection(currentRoomId, dispatch, player);
+      if(roomId) initiateSocketConnection(roomId, dispatch, player);
 
       return () => {
         disconnectSocket();
@@ -65,7 +66,7 @@ const Room = () => {
     };
 
     initRoom();
-  }, [roomId, checkRoomExists, dispatch, player, navigate, setOpen]);
+  }, [roomId, checkRoomExists, dispatch, player, navigate, setOpen, nickname]);
 
   const handleTitleClick = () => {
     if (window.location.pathname !== "/") {
@@ -108,7 +109,6 @@ const Room = () => {
           </button>
         </ModalFooter>
       </ModalBody>
-
       <div className="w-full flex md:flex-none md:justify-start justify-center z-10">
         <h1
           className="text-5xl font-sans bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600 font-bold text-blue-600 m-8 md:mt-7 md:ml-8 md:mb-0 cursor-pointer"

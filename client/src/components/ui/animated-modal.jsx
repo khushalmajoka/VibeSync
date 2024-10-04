@@ -1,18 +1,22 @@
 import { cn } from "../../lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 const ModalContext = createContext(undefined);
 
-export const ModalProvider = ({
-  children
-}) => {
+export const ModalProvider = ({ children }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    (<ModalContext.Provider value={{ open, setOpen }}>
+    <ModalContext.Provider value={{ open, setOpen }}>
       {children}
-    </ModalContext.Provider>)
+    </ModalContext.Provider>
   );
 };
 
@@ -24,33 +28,39 @@ export const useModal = () => {
   return context;
 };
 
-export function Modal({
-  children
-}) {
+export function Modal({ children }) {
   return <ModalProvider>{children}</ModalProvider>;
 }
 
 export const ModalTrigger = ({
   children,
-  className
+  className,
+  disabled,
+  setCurrentAction,
+  joinButtonRef,
 }) => {
   const { setOpen } = useModal();
+
   return (
-    (<button
+    <button
       className={cn(
-        "overflow-hidden",
-        className
+        "bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 block text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset, px-4 0px_-1px_0px_0px_#ffffff40_inset]",
+        className,
+        disabled && "opacity-50 cursor-not-allowed"
       )}
-      onClick={() => setOpen(true)}>
+      ref={joinButtonRef}
+      onClick={() => {
+        setOpen(true);
+        setCurrentAction();
+      }}
+      disabled={disabled}
+    >
       {children}
-    </button>)
+    </button>
   );
 };
 
-export const ModalBody = ({
-  children,
-  className
-}) => {
+export const ModalBody = ({ children, className }) => {
   const { open } = useModal();
 
   useEffect(() => {
@@ -66,7 +76,7 @@ export const ModalBody = ({
   useOutsideClick(modalRef, () => setOpen(false));
 
   return (
-    (<AnimatePresence>
+    <AnimatePresence>
       {open && (
         <motion.div
           initial={{
@@ -80,7 +90,8 @@ export const ModalBody = ({
             opacity: 0,
             backdropFilter: "blur(0px)",
           }}
-          className="fixed [perspective:800px] [transform-style:preserve-3d] inset-0 h-full w-full  flex items-center justify-center z-50">
+          className="fixed [perspective:800px] [transform-style:preserve-3d] inset-0 h-full w-full  flex items-center justify-center z-50"
+        >
           <Overlay />
 
           <motion.div
@@ -110,44 +121,36 @@ export const ModalBody = ({
               type: "spring",
               stiffness: 260,
               damping: 15,
-            }}>
+            }}
+          >
             <CloseIcon />
             {children}
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>)
+    </AnimatePresence>
   );
 };
 
-export const ModalContent = ({
-  children,
-  className
-}) => {
+export const ModalContent = ({ children, className }) => {
   return (
-    (<div className={cn("flex flex-col flex-1 p-8 md:p-10", className)}>
+    <div className={cn("flex flex-col flex-1 p-8 md:p-10", className)}>
       {children}
-    </div>)
+    </div>
   );
 };
 
-export const ModalFooter = ({
-  children,
-  className
-}) => {
+export const ModalFooter = ({ children, className }) => {
   return (
-    (<div
-      className={cn("flex justify-end p-4 bg-neutral-900", className)}>
+    <div className={cn("flex justify-end p-4 bg-neutral-900", className)}>
       {children}
-    </div>)
+    </div>
   );
 };
 
-const Overlay = ({
-  className
-}) => {
+const Overlay = ({ className }) => {
   return (
-    (<motion.div
+    <motion.div
       initial={{
         opacity: 0,
       }}
@@ -159,14 +162,18 @@ const Overlay = ({
         opacity: 0,
         backdropFilter: "blur(0px)",
       }}
-      className={`fixed inset-0 h-full w-full bg-black bg-opacity-50 z-50 ${className}`}></motion.div>)
+      className={`fixed inset-0 h-full w-full bg-black bg-opacity-50 z-50 ${className}`}
+    ></motion.div>
   );
 };
 
 const CloseIcon = () => {
   const { setOpen } = useModal();
   return (
-    (<button onClick={() => setOpen(false)} className="absolute top-4 right-4 group">
+    <button
+      onClick={() => setOpen(false)}
+      className="absolute top-4 right-4 group"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -177,21 +184,19 @@ const CloseIcon = () => {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="text-white h-4 w-4 group-hover:scale-125 group-hover:rotate-3 transition duration-200">
+        className="text-white h-4 w-4 group-hover:scale-125 group-hover:rotate-3 transition duration-200"
+      >
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <path d="M18 6l-12 12" />
         <path d="M6 6l12 12" />
       </svg>
-    </button>)
+    </button>
   );
 };
 
 // Hook to detect clicks outside of a component.
 // Add it in a separate file, I've added here for simplicity
-export const useOutsideClick = (
-  ref,
-  callback
-) => {
+export const useOutsideClick = (ref, callback) => {
   useEffect(() => {
     const listener = (event) => {
       // DO NOTHING if the element being clicked is the target element or their children
